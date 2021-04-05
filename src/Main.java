@@ -29,20 +29,15 @@ public class Main {
             graph.addVertex(a);
         }
 
-        graph.addVertex(Eskildstrup);
-        graph.addVertex(Haslev);
-        graph.addVertex(Holbæk);
-        graph.addVertex(Jærgerspris);
-        graph.addVertex(Kalundborg);
-        graph.addVertex(Korsør);
-        graph.addVertex(Køge);
-/*
-        A.addOutEdge(new Edge(A, B, 1));
-        A.addOutEdge(new Edge(A, C, 5));
-        A.addOutEdge(new Edge(A, E, 3));
-        A.addOutEdge(new Edge(A, B, 1));
-        A.addOutEdge(new Edge(A, B, 1));
-        A.addOutEdge(new Edge(A, B, 1));
-*/
+
+        Eskildstrup.addOutEdge(new Edge(Eskildstrup, Maribo, 28));
+        Eskildstrup.addOutEdge(new Edge(Eskildstrup, Nykøbing, 13));
+        Eskildstrup.addOutEdge(new Edge(Eskildstrup, Vordingborg, 24));
+        Haslev.addOutEdge(new Edge(Haslev, Korsør, 60));
+        Haslev.addOutEdge(new Edge(Haslev, Køge, 24));
+        Haslev.addOutEdge(new Edge(Haslev, Næstved, 25));
+        Haslev.addOutEdge(new Edge(Haslev, Ringsted, 19));
+        Haslev.addOutEdge(new Edge(Haslev, Roskilde, 47));
+
     }
 }

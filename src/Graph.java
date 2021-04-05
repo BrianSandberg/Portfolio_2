@@ -39,6 +39,7 @@ class Vertex implements Comparable<Vertex>{
     private String Name;
     private ArrayList<Edge> outEdges;
     private Integer distance = Integer.MAX_VALUE;
+    //Vertex prev = null;
 
     public String getName() {
         return Name;
