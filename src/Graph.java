@@ -19,6 +19,13 @@ public class Graph {
         Edge newEdge = new Edge(from, to, dist);
     }
 
+    public void prims(){
+        int[] distance = new int[vertices.size()];
+        int[] prev = new int[vertices.size()];
+
+
+    }
+
     public void printGraph(){
         Vertex currentVertex;
         for (int i = 0; i < vertices.size(); i++){
@@ -120,5 +127,20 @@ class Edge{
         fromVertex = from;
         toVertex = to;
         weight = cost;
+    }
+}
+
+class Pair implements Comparable<Pair>{
+    Integer distance;
+    Integer index;
+
+    public Pair(Integer distance, Integer index) {
+        this.distance = distance;
+        this.index = index;
+    }
+
+    @Override
+    public int compareTo(Pair o) {
+        return this.distance.compareTo(o.distance);
     }
 }
