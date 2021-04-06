@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Graph {
     private ArrayList<Vertex> vertices;
@@ -22,8 +23,27 @@ public class Graph {
     public void prims(){
         int[] distance = new int[vertices.size()];
         int[] prev = new int[vertices.size()];
+        MinHeap<Pair> Q = new MinHeap<>();
+        Arrays.fill(distance, Integer.MAX_VALUE);
+        Arrays.fill(prev, -1);
 
+        //The setup for the algorithm
+        if(vertices.size() > 0){
+            distance[0] = 0;
+        }
+        for(int i = 0; i < vertices.size(); i++){
+            Q.Insert(new Pair(distance[i], i));
+        }
 
+        //The algorithm
+        while(!Q.isEmpty()){
+            Pair minVertexPair = Q.extractMin();
+            for(int i = 0; i < vertices.size(); i++){
+                if(vertices.get(minVertexPair.index)){
+
+                }
+            }
+        }
     }
 
     public void printGraph(){
