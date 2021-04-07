@@ -76,7 +76,9 @@ public class Main {
         Ringsted.addOutEdge(new Edge(Ringsted, Vordingborg, 58));
         Slagelse.addOutEdge(new Edge(Slagelse, Sorø, 14));
 
-        graph.printGraph();
+        //graph.printGraph();
+
+        graph.prims();
     }
 
 

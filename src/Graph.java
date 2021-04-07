@@ -24,6 +24,7 @@ public class Graph {
         int[] distance = new int[vertices.size()];
         int[] prev = new int[vertices.size()];
         MinHeap<Pair> Q = new MinHeap<>();
+        ArrayList<Pair> VertexPairs = new ArrayList<>();
         Arrays.fill(distance, Integer.MAX_VALUE);
         Arrays.fill(prev, -1);
 
@@ -32,17 +33,34 @@ public class Graph {
             distance[0] = 0;
         }
         for(int i = 0; i < vertices.size(); i++){
-            Q.Insert(new Pair(distance[i], i));
+            VertexPairs.add(new Pair(distance[i], i));
+            Q.Insert(VertexPairs.get(i));
+
         }
 
+        int MST = 0;
         //The algorithm
         while(!Q.isEmpty()){
+            //New idea
+            //Vertex currentVertex = Q.extractMin();
+
+            //Maybe this shouldnt be a pair? Do we even need the pair class?
             Pair minVertexPair = Q.extractMin();
             for(int i = 0; i < vertices.size(); i++){
-                if(vertices.get(minVertexPair.index)){
+                if(minVertexPair.index < distance[i]){
 
+                    distance[i] = minVertexPair.index;
+                    //prev[i] = minVertexPair.index;
+                    int pos = Q.getPosition(VertexPairs.get(i));
+                    VertexPairs.get(i).distance = minVertexPair.index;
+                    Q.decreasekey(pos);
                 }
             }
+            MST += distance[minVertexPair.index];
+        }
+        System.out.println("MST Distance: " + MST);
+        for(int i = 0; i < vertices.size(); i++){
+            System.out.println(" Parent " + prev[i] + " to " + i + " EdgeWeight: " + distance[i]);
         }
     }
 
