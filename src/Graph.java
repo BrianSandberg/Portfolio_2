@@ -21,20 +21,18 @@ public class Graph {
     }
 
     public void prims(){
-        int[] distance = new int[vertices.size()];
-        int[] prev = new int[vertices.size()];
-        MinHeap<Pair> Q = new MinHeap<>();
-        ArrayList<Pair> VertexPairs = new ArrayList<>();
-        Arrays.fill(distance, Integer.MAX_VALUE);
-        Arrays.fill(prev, -1);
+        //int[] distance = new int[vertices.size()];
+        //int[] prev = new int[vertices.size()];
+        MinHeap<Vertex> Q = new MinHeap<>();
+
 
         //The setup for the algorithm
         if(vertices.size() > 0){
-            distance[0] = 0;
+            vertices.get(0).setDistance(0);
         }
         for(int i = 0; i < vertices.size(); i++){
-            VertexPairs.add(new Pair(distance[i], i));
-            Q.Insert(VertexPairs.get(i));
+            //VertexPairs.add(new Pair(distance[i], i));
+            Q.Insert(vertices.get(i));
 
         }
 
@@ -45,14 +43,14 @@ public class Graph {
             //Vertex currentVertex = Q.extractMin();
 
             //Maybe this shouldnt be a pair? Do we even need the pair class?
-            Pair minVertexPair = Q.extractMin();
-            for(int i = 0; i < vertices.size(); i++){
-                if(minVertexPair.index < distance[i]){
+            Vertex minVertex = Q.extractMin();
+            for(int i = 0; i < minVertex.getOutEdges().size(); i++){
+                if(minVertex.index < distance[i]){
 
                     distance[i] = minVertexPair.index;
                     //prev[i] = minVertexPair.index;
                     int pos = Q.getPosition(VertexPairs.get(i));
-                    VertexPairs.get(i).distance = minVertexPair.index;
+                    Vertex.get(i).distance = minVertex.index;
                     Q.decreasekey(pos);
                 }
             }
