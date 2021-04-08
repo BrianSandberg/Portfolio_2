@@ -1,5 +1,3 @@
-//Kopieret direkte fra moodle - Se video på MinHeap senere
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
