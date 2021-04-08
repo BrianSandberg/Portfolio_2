@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Graph {
     private ArrayList<Vertex> vertices;
@@ -12,7 +11,7 @@ public class Graph {
         vertices.add(v);
     }
 
-    public void newEdge(Vertex from, Vertex to, double dist){
+    public void newEdge(Vertex from, Vertex to, Integer dist){
         if (!(vertices.contains(from) && vertices.contains(to))){
             System.out.println("Vertex not found!");
             return;
@@ -24,6 +23,7 @@ public class Graph {
         //int[] distance = new int[vertices.size()];
         //int[] prev = new int[vertices.size()];
         MinHeap<Vertex> Q = new MinHeap<>();
+        int j = 0;
 
 
         //The setup for the algorithm
@@ -45,20 +45,31 @@ public class Graph {
             //Maybe this shouldnt be a pair? Do we even need the pair class?
             Vertex minVertex = Q.extractMin();
             for(int i = 0; i < minVertex.getOutEdges().size(); i++){
-                if(minVertex.index < distance[i]){
+                //if (minVertex.compareTo(minVertex.getDistance(i)))
+                if(minVertex.getOutEdges().get(i).getWeight() < vertices.get(i).getDistance()){
 
+                    vertices.get(i).setDistance(minVertex.getOutEdges().get(i).getWeight());
+                    vertices.get(i).prev = minVertex;
+                    int pos = Q.getPosition(vertices.get(i));
+                    vertices.get(i).setDistance(minVertex.getOutEdges().get(i).getWeight());
+                    Q.decreasekey(pos);
+
+                    /*
                     distance[i] = minVertexPair.index;
                     //prev[i] = minVertexPair.index;
                     int pos = Q.getPosition(VertexPairs.get(i));
                     Vertex.get(i).distance = minVertex.index;
                     Q.decreasekey(pos);
+                    */
+
                 }
             }
-            MST += distance[minVertexPair.index];
+            //MST += distance[minVertexPair.index];
+            MST += minVertex.getDistance();
         }
         System.out.println("MST Distance: " + MST);
         for(int i = 0; i < vertices.size(); i++){
-            System.out.println(" Parent " + prev[i] + " to " + i + " EdgeWeight: " + distance[i]);
+            System.out.println(" Parent " + vertices.get(i+1).prev.getName() + " to " + vertices.get(i).getName() + " EdgeWeight: " + vertices.get(i).getDistance());
         }
     }
 
@@ -82,7 +93,7 @@ class Vertex implements Comparable<Vertex>{
     private String Name;
     private ArrayList<Edge> outEdges;
     private Integer distance = Integer.MAX_VALUE;
-    //Vertex prev = null;
+    Vertex prev = null;
 
     public String getName() {
         return Name;
@@ -133,7 +144,7 @@ class Vertex implements Comparable<Vertex>{
 class Edge{
     private Vertex fromVertex;
     private Vertex toVertex;
-    private double weight;
+    private Integer weight;
 
     public Vertex getFromVertex() {
         return fromVertex;
@@ -151,15 +162,15 @@ class Edge{
         this.toVertex = toVertex;
     }
 
-    public double getWeight() {
+    public Integer getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(Integer weight) {
         this.weight = weight;
     }
 
-    public Edge(Vertex from, Vertex to, double cost){
+    public Edge(Vertex from, Vertex to, Integer cost){
         fromVertex = from;
         toVertex = to;
         weight = cost;
