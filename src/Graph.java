@@ -3,23 +3,24 @@ import java.util.ArrayList;
 public class Graph {
     private ArrayList<Vertex> vertices;
 
-    public Graph(){
+    public Graph() {
         vertices = new ArrayList<Vertex>();
     }
 
-    public void addVertex(Vertex v){
+    public void addVertex(Vertex v) {
         vertices.add(v);
     }
 
-    public void newEdge(Vertex from, Vertex to, Integer dist){
-        if (!(vertices.contains(from) && vertices.contains(to))){
+    public void newEdge(Vertex from, Vertex to, Integer dist) {
+        if (!(vertices.contains(from) && vertices.contains(to))) {
             System.out.println("Vertex not found!");
             return;
         }
         Edge newEdge = new Edge(from, to, dist);
+        Edge reverseEdge = new Edge(to, from, dist);
     }
 
-    public void prims(){
+    public void prims() {
         //int[] distance = new int[vertices.size()];
         //int[] prev = new int[vertices.size()];
         MinHeap<Vertex> Q = new MinHeap<>();
@@ -27,10 +28,10 @@ public class Graph {
 
 
         //The setup for the algorithm
-        if(vertices.size() > 0){
+        if (vertices.size() > 0) {
             vertices.get(0).setDistance(0);
         }
-        for(int i = 0; i < vertices.size(); i++){
+        for (int i = 0; i < vertices.size(); i++) {
             //VertexPairs.add(new Pair(distance[i], i));
             Q.Insert(vertices.get(i));
 
@@ -38,20 +39,21 @@ public class Graph {
 
         int MST = 0;
         //The algorithm
-        while(!Q.isEmpty()){
+        while (!Q.isEmpty()) {
             //New idea
             //Vertex currentVertex = Q.extractMin();
 
             //Maybe this shouldnt be a pair? Do we even need the pair class?
             Vertex minVertex = Q.extractMin();
-            for(int i = 0; i < minVertex.getOutEdges().size(); i++){
+            for (int i = 0; i < minVertex.getOutEdges().size(); i++) {
                 //if (minVertex.compareTo(minVertex.getDistance(i)))
-                if(minVertex.getOutEdges().get(i).getWeight() < vertices.get(i).getDistance()){
+                if (minVertex.getOutEdges().get(i).getWeight() < minVertex.getOutEdges().get(i).getToVertex().getDistance()) {
 
-                    vertices.get(i).setDistance(minVertex.getOutEdges().get(i).getWeight());
-                    vertices.get(i).prev = minVertex;
-                    int pos = Q.getPosition(vertices.get(i));
-                    vertices.get(i).setDistance(minVertex.getOutEdges().get(i).getWeight());
+                    minVertex.getOutEdges().get(i).getToVertex().setDistance(minVertex.getOutEdges().get(i).getWeight());
+                    //System.out.println(minVertex.getOutEdges().get(i).getToVertex().getDistance());
+                    minVertex.getOutEdges().get(i).getToVertex().prev = minVertex;
+                    int pos = Q.getPosition(minVertex.getOutEdges().get(i).getToVertex());
+                    //vertices.get(i).setDistance(minVertex.getOutEdges().get(i).getWeight());
                     Q.decreasekey(pos);
 
                     /*
@@ -64,22 +66,28 @@ public class Graph {
 
                 }
             }
-            //MST += distance[minVertexPair.index];
-            MST += minVertex.getDistance();
+
+            //Lappeløsning
+            if (minVertex.getDistance() < 400) {
+                MST = MST + minVertex.getDistance();
+            }
         }
         System.out.println("MST Distance: " + MST);
-        for(int i = 0; i < vertices.size(); i++){
-            System.out.println(" Parent " + vertices.get(i+1).prev.getName() + " to " + vertices.get(i).getName() + " EdgeWeight: " + vertices.get(i).getDistance());
+        for (int i = 0; i < vertices.size(); i++) {
+            //Lappeløsning
+            if (vertices.get(i).prev != null) {
+                System.out.println(" Parent " + vertices.get(i).prev.getName() + " to " + vertices.get(i).getName() + " EdgeWeight: " + vertices.get(i).getDistance());
+            }
         }
     }
 
-    public void printGraph(){
+    public void printGraph() {
         Vertex currentVertex;
-        for (int i = 0; i < vertices.size(); i++){
+        for (int i = 0; i < vertices.size(); i++) {
             currentVertex = vertices.get(i);
             System.out.println("Edges from Vertex: " + currentVertex.getName());
 
-            for(int j = 0; j < currentVertex.getOutEdges().size(); j++){
+            for (int j = 0; j < currentVertex.getOutEdges().size(); j++) {
                 Edge currentEdge = currentVertex.getOutEdges().get(j);
                 System.out.println("To " + currentEdge.getToVertex().getName() + " weight " + currentEdge.getWeight());
             }
@@ -89,7 +97,7 @@ public class Graph {
 }
 
 
-class Vertex implements Comparable<Vertex>{
+class Vertex implements Comparable<Vertex> {
     private String Name;
     private ArrayList<Edge> outEdges;
     private Integer distance = Integer.MAX_VALUE;
@@ -119,29 +127,37 @@ class Vertex implements Comparable<Vertex>{
         this.distance = distance;
     }
 
-    public Vertex(String id){
+    public Vertex(String id) {
         this.Name = id;
         outEdges = new ArrayList<>();
     }
 
-    public void addOutEdge(Edge outEdge){
+    public void addOutEdge(Edge outEdge) {
         outEdges.add(outEdge);
     }
 
 
     @Override
     public int compareTo(Vertex o) {
-        if (this.distance < o.distance){
+        if (this.distance < o.distance) {
             return -1;
         }
-        if (this.distance > o.distance){
+        if (this.distance > o.distance) {
             return 1;
         }
         return 0;
     }
+
+    public Vertex getPrev() {
+        return prev;
+    }
+
+    public void setPrev(Vertex prev) {
+        this.prev = prev;
+    }
 }
 
-class Edge{
+class Edge {
     private Vertex fromVertex;
     private Vertex toVertex;
     private Integer weight;
@@ -170,14 +186,14 @@ class Edge{
         this.weight = weight;
     }
 
-    public Edge(Vertex from, Vertex to, Integer cost){
+    public Edge(Vertex from, Vertex to, Integer cost) {
         fromVertex = from;
         toVertex = to;
         weight = cost;
     }
 }
 
-class Pair implements Comparable<Pair>{
+class Pair implements Comparable<Pair> {
     Integer distance;
     Integer index;
 
