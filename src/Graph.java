@@ -21,8 +21,7 @@ public class Graph {
     }
 
     public void prims() {
-        //int[] distance = new int[vertices.size()];
-        //int[] prev = new int[vertices.size()];
+
         MinHeap<Vertex> Q = new MinHeap<>();
         int j = 0;
 
@@ -32,7 +31,7 @@ public class Graph {
             vertices.get(0).setDistance(0);
         }
         for (int i = 0; i < vertices.size(); i++) {
-            //VertexPairs.add(new Pair(distance[i], i));
+
             Q.Insert(vertices.get(i));
 
         }
@@ -40,35 +39,21 @@ public class Graph {
         int MST = 0;
         //The algorithm
         while (!Q.isEmpty()) {
-            //New idea
-            //Vertex currentVertex = Q.extractMin();
 
-            //Maybe this shouldnt be a pair? Do we even need the pair class?
             Vertex minVertex = Q.extractMin();
             for (int i = 0; i < minVertex.getOutEdges().size(); i++) {
-                //if (minVertex.compareTo(minVertex.getDistance(i)))
-                if (minVertex.getOutEdges().get(i).getWeight() < minVertex.getOutEdges().get(i).getToVertex().getDistance()) {
 
+                if (minVertex.getOutEdges().get(i).getWeight() < minVertex.getOutEdges().get(i).getToVertex().getDistance()) {
                     minVertex.getOutEdges().get(i).getToVertex().setDistance(minVertex.getOutEdges().get(i).getWeight());
-                    //System.out.println(minVertex.getOutEdges().get(i).getToVertex().getDistance());
                     minVertex.getOutEdges().get(i).getToVertex().prev = minVertex;
                     int pos = Q.getPosition(minVertex.getOutEdges().get(i).getToVertex());
-                    //vertices.get(i).setDistance(minVertex.getOutEdges().get(i).getWeight());
                     Q.decreasekey(pos);
-
-                    /*
-                    distance[i] = minVertexPair.index;
-                    //prev[i] = minVertexPair.index;
-                    int pos = Q.getPosition(VertexPairs.get(i));
-                    Vertex.get(i).distance = minVertex.index;
-                    Q.decreasekey(pos);
-                    */
 
                 }
             }
 
             //Lappeløsning
-            if (minVertex.getDistance() < 400) {
+            if (minVertex.getDistance() < Integer.MAX_VALUE) {
                 MST = MST + minVertex.getDistance();
             }
         }
@@ -190,20 +175,5 @@ class Edge {
         fromVertex = from;
         toVertex = to;
         weight = cost;
-    }
-}
-
-class Pair implements Comparable<Pair> {
-    Integer distance;
-    Integer index;
-
-    public Pair(Integer distance, Integer index) {
-        this.distance = distance;
-        this.index = index;
-    }
-
-    @Override
-    public int compareTo(Pair o) {
-        return this.distance.compareTo(o.distance);
     }
 }
