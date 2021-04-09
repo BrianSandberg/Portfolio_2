@@ -72,9 +72,9 @@ public class Graph {
                 MST = MST + minVertex.getDistance();
             }
         }
-        System.out.println("MST Distance: " + MST);
+        System.out.println("MST Distance: " + MST + "km");
+        System.out.println("Price is: " + MST * 100000 + "kr");
         for (int i = 0; i < vertices.size(); i++) {
-            //Lappeløsning
             if (vertices.get(i).prev != null) {
                 System.out.println(" Parent " + vertices.get(i).prev.getName() + " to " + vertices.get(i).getName() + " EdgeWeight: " + vertices.get(i).getDistance());
             }
